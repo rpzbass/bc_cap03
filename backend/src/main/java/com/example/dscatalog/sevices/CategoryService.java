@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +13,18 @@ import org.springframework.stereotype.Service;
 import com.example.dscatalog.dto.CategoryDTO;
 import com.example.dscatalog.entities.Category;
 import com.example.dscatalog.repositories.CategoryRepository;
-import com.example.dscatalog.sevices.exceptions.EntityNotFoundException;
+import com.example.dscatalog.sevices.exceptions.ResourceNotFoundException;
 
 @Service
 public class CategoryService {
 	
 	@Autowired
-	private CategoryRepository respository;
+	private CategoryRepository repository;
 
 	@Transactional
 	public List<CategoryDTO> findAll() {
 
-			List<Category> list =  respository.findAll();
+			List<Category> list =  repository.findAll();
 			
 		    return list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
 	
@@ -31,11 +32,11 @@ public class CategoryService {
 	}
 
 	@Transactional
-	public CategoryDTO findById(Long id) throws EntityNotFoundException {
+	public CategoryDTO findById(Long id) throws ResourceNotFoundException {
 
-			Optional<Category> obj = respository.findById(id);
+			Optional<Category> obj = repository.findById(id);
 			
-			Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not Found"));
+			Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not Found"));
 			
 			return  new CategoryDTO(entity);
 		    
@@ -46,9 +47,26 @@ public class CategoryService {
 		
 		Category entity = new Category();
 		entity.setName(dto.getName());
-		entity = respository.save(entity);
+		entity = repository.save(entity);
 		return new CategoryDTO(entity);
 		
+	}
+	@Transactional
+	public CategoryDTO update(Long id,CategoryDTO dto) {
+		try {
+		
+			Category entity = repository.getOne(id);
+			entity.setName(dto.getName());
+			entity = repository.save(entity);
+			return new CategoryDTO(entity);
+		
+		} catch(EntityNotFoundException e) {
+			
+			throw new ResourceNotFoundException("Id not found" + id);
+			
+		}
+
+
 	}
 	
 	
