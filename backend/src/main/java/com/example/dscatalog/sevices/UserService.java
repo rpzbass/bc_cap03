@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.example.dscatalog.dto.RoleDTO;
 import com.example.dscatalog.dto.UserDTO;
 import com.example.dscatalog.dto.UserInsertDTO;
+import com.example.dscatalog.dto.UserUpdateDTO;
 import com.example.dscatalog.entities.Role;
 import com.example.dscatalog.entities.User;
 import com.example.dscatalog.repositories.RoleRepository;
@@ -66,7 +67,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserDTO update(Long id, UserDTO dto) {
+	public UserDTO update(Long id, UserUpdateDTO dto) {
 		try {
 
 			User entity = repository.getOne(id);
