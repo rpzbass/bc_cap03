@@ -36,7 +36,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	private BCryptPasswordEncoder passwordEncode;   //criptografa a senha do digitada 
 	
 	@Autowired 
-	private JwtAccessTokenConverter accessTokenConverter; // Converte os tokens 
+	private JwtAccessTokenConverter accessTokenConverter; // Converte os tokens para json
 	
 	@Autowired
 	private JwtTokenStore tokenStore; //traduz os tokens usando uma palavra passe
