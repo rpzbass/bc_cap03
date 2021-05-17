@@ -50,7 +50,6 @@ public class ProductResource {
 	public ResponseEntity<ProductDTO> findById(@PathVariable Long id)  {
 		
 		ProductDTO obj = service.findById(id);
-		
 		return ResponseEntity.ok().body(obj);
 	
 	}
